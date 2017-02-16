@@ -8,7 +8,7 @@ cache:
 install:
 - pip install -U platformio
 script:
-- platformio run -e esp12e_deploy
+- platformio run
 deploy:
   provider: releases
   overwrite: true
