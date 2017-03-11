@@ -2,6 +2,8 @@
 .piolibdeps
 .clang_complete
 .gcc-flags.json
+client-secret.json
+credentials.tar.gz
 src/blynk_setup.h
 src/blynk_setup.tar.gz
 blynk_setup.tar.gz

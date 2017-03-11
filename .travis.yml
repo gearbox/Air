@@ -7,20 +7,27 @@ cache:
   - "~/.platformio"
 before_install:
 - openssl aes-256-cbc -K $encrypted_4329a9d48b6f_key -iv $encrypted_4329a9d48b6f_iv
-  -in blynk_setup.tar.gz.enc -out blynk_setup.tar.gz -d
-- tar -xzf blynk_setup.tar.gz
+  -in credentials.tar.gz.enc -out credentials.tar.gz -d
+- tar -xzf credentials.tar.gz
 install:
 - pip install -U platformio
 script:
 - platformio run
 deploy:
-  provider: releases
-  overwrite: true
-  api_key:
-    secure: eqMMDtMLTFsAkNwcjEUAb0vTH6BI3tVj7wOHNrNqAFmoNxfXQ7ZoruA/B4AP1KoT/AI/n5+PuIpptMzvRVaaYI79WlpImmp3uG3vjq/o2TTIO3R3+m4iKnnMm/H3K6dpef8qqCW/s8tAyX0RGMCpcSKX108q9AcBFnkLtH3uh343b+KcHhs6fnuHIc2gZPHp3JR8YqBKgGwQGfGl8JMQXQhfC/OdQ4OiwWQVjCT8a8L7vcFD3Jq7XKcQL8TgaIcZLOKH+wUYzGVxfNeI++9xFqyW2GWdDNUzjQmYBfB/A6Eyzl4iYbbGRPEnDEtE+XNoA27jrvKaRvhKlutTU96EyoPZVJdw4WDYp53L/SnyR7VkDFEbBcddMDJ2u+LgOsk+iXXbRZeT6iY3V0uSogyK+pvrbUFm7ynlzXdwhLqSFHIjpUgeNeLosH3ra3dcnQ04wwBOdVYxRMRnykWQ3CJpQqh4GQxzq7OPTOgSZKmWckaTa2VtJtA+POmUyrzlUVR9scz2jpG7tbshAL0EodIvlcb3kkl9p74JQ8ngP8z6+TxXJ2Xa33/cmeVb0Yo5h1RBWoqHdh67+Jb7y58DNCFVh8zRrz+UmaF3qIJiddk4y0u1Sx7fUTwpNG9lVO1Ch3y6S4MMErg8cH7Hne9C5O0IFHCbvjeAiDMApk1MOzyMj/I=
-  file: ".pioenvs/esp12e/firmware.bin"
-  skip_cleanup: true
-  on:
-    repo: gearbox/Air
-    all_branches: true
-    tags: true
+  matrix:
+  - provider: releases
+    overwrite: true
+    api_key:
+      secure: eqMMDtMLTFsAkNwcjEUAb0vTH6BI3tVj7wOHNrNqAFmoNxfXQ7ZoruA/B4AP1KoT/AI/n5+PuIpptMzvRVaaYI79WlpImmp3uG3vjq/o2TTIO3R3+m4iKnnMm/H3K6dpef8qqCW/s8tAyX0RGMCpcSKX108q9AcBFnkLtH3uh343b+KcHhs6fnuHIc2gZPHp3JR8YqBKgGwQGfGl8JMQXQhfC/OdQ4OiwWQVjCT8a8L7vcFD3Jq7XKcQL8TgaIcZLOKH+wUYzGVxfNeI++9xFqyW2GWdDNUzjQmYBfB/A6Eyzl4iYbbGRPEnDEtE+XNoA27jrvKaRvhKlutTU96EyoPZVJdw4WDYp53L/SnyR7VkDFEbBcddMDJ2u+LgOsk+iXXbRZeT6iY3V0uSogyK+pvrbUFm7ynlzXdwhLqSFHIjpUgeNeLosH3ra3dcnQ04wwBOdVYxRMRnykWQ3CJpQqh4GQxzq7OPTOgSZKmWckaTa2VtJtA+POmUyrzlUVR9scz2jpG7tbshAL0EodIvlcb3kkl9p74JQ8ngP8z6+TxXJ2Xa33/cmeVb0Yo5h1RBWoqHdh67+Jb7y58DNCFVh8zRrz+UmaF3qIJiddk4y0u1Sx7fUTwpNG9lVO1Ch3y6S4MMErg8cH7Hne9C5O0IFHCbvjeAiDMApk1MOzyMj/I=
+    file: ".pioenvs/esp12e/firmware.bin"
+    skip_cleanup: true
+    on:
+      repo: gearbox/Air
+      all_branches: true
+      tags: true
+  - provider: gcs
+    skip_cleanup: true
+    access_key_id: GOOGDJUP6NY33HBAMAEF
+    secret_access_key:
+      secure: hihYWn30qKKK0F2VblGcorNKGD6quftPTfqhy6OdX6nCrbHqVAm2PIj9ttM0ACKmOCZTVVf55zwI9Hjoi+1eO8xCteqk4cBJT2GCUback2qVpT8JuUERKr9o1cNE8PsKdTZA9RGPYivtfYFPLQKYhkTfXuAvOSZR/cD30oocmgFokK2P0ilrFwXCWjhusdRO+iVFkvXKj5xH3lQUkwSzAOLcE4xCpDarhy59YTZfqfvhkPRHcLzoDnTDrYwhYb8Qtee3IRLlfROUCY8TTikS1iCIbnD6hJj20vHOU+vX+1C16md2XeLtefMPrVXDE9c/yFQ2FljSIw8gFK9Tb62oxBpm5SLhe9aWdaATacQ2Yap9VU/zTzSYjnXHeoqU2oAQHmIwB6jlSL28gHskukKUfoHDZ4Pl9Zh/QqV6OTP1MxV7VhSKv/5gsYR0/iYdfI3/EU9DhbyyfUJkylHWujPh8D4xwr0gA3l7yMgbMj9jglsRMe+Mlar7hs1E2YAb2ADGNphUm9pdzio52dTkRO9pe5/Zw7ecM/s0j/MCvEHZ8JxuC+jeQKFwvMqvTJ2MAnAnkkUwH2p+fse4Beh+nQ3DUnjIeVnUqorz8lSSFnwmN6L6vQv/JTiprz3bJyUcifyqgB0FFMFzP4dDKCxH2kMccY/HthqmW66treNgWQ3cb10=
+    bucket: geariot-air.appspot.com
