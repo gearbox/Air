@@ -27,6 +27,9 @@ install:
 - pip install -r requirements.txt -t lib/
 script:
 - platformio run
+- ls .. -la
+- ls -la
+- mkdir -p update
 - ls -la
 - cp .pioenvs/esp12e/firmware.bin update/fw.bin
 - gcloud -q preview app deploy app.yaml --promote
