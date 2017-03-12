@@ -15,6 +15,8 @@
 #include <ESP8266httpUpdate.h>
 // Blynk
 #include <BlynkSimpleEsp8266.h>
+// Set Blynk token and server
+#include "blynk_setup.h"
 
 // JSON
 #include <ArduinoJson.h>          //https://github.com/bblanchon/ArduinoJson
@@ -44,11 +46,6 @@ SimpleTimer timer;
 #define HIGH_CO2 1000 //High concentration of CO2 - Alert
 byte cmd[9] = {0xFF,0x01,0x86,0x00,0x00,0x00,0x00,0x00,0x79};
 unsigned char response[7];
-
-// Blynk token
-char blynk_token[33] {"483ca21b3333423d90b02ad60a421e45"};
-char blynk_server[64] {"blynk-cloud.com"};
-const uint16_t blynk_port {8442};
 
 // Device Id
 char device_id[17] = "Air";
@@ -327,7 +324,7 @@ BLYNK_WRITE(V22) {
                 strcat(full_version, device_id);
                 strcat(full_version, "::");
                 strcat(full_version, fw_ver);
-
+//https://drive.google.com/file/d/0B82NFZGGrdaubFBMWl9vc1ZyYTA/view?usp=sharing
                 t_httpUpdate_return ret = ESPhttpUpdate.update("http://romfrom.space/get", full_version);
                 switch (ret) {
                 case HTTP_UPDATE_FAILED:

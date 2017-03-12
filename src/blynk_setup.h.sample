@@ -1,0 +1,10 @@
+#include <stdint.h>
+
+#ifndef blynk_token
+//Blynk token
+char blynk_token[33] {"483ca21b3333423d90b02ad60a421e45"};
+//Using Blynk server, but you can define your local Blynk server here
+char blynk_server[64] {"blynk-cloud.com"};
+//Standard port is used
+const uint16_t blynk_port {8442};
+#endif
