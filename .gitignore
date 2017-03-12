@@ -4,3 +4,5 @@
 .gcc-flags.json
 src/blynk_setup.h
 src/blynk_setup.tar.gz
+blynk_setup.tar.gz
+blynk_setup.h

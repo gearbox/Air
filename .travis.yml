@@ -5,13 +5,10 @@ sudo: false
 cache:
   directories:
   - "~/.platformio"
-env:
-  global:
-    secure: cOnxkw37k6yRN15iyjTsqcf8dHlcqdRuQ9waY2olv0Zv01KFgltr45qj504nS609K2nFPVRdOrbkJAMOVesjVulDKwJGwj4njgfL0DNQCeGoQigjoKIRZ1C+Mx14F54cM6n2BcTuLw0OjcAHA5o11Y8haky1d8NJIwBPfj8p/kY4s9wBeTyw/+g8QF3cBHYAMUPkGBRGfZNLqO3J4XRpbwo/NkGMhYI3FhHRUR10jtCZx8y2Uy2hMzLmsQHYHLPt4+o7xFDLujDm6OKZaQP/RXFvAIBQ0XqCBE/TMeyIK1knTj0DwLVeXKaVrTIc376/9f+KhZsv0XCT1Izamk16xmKovSz2FGBz7VDFq9YoF0qQlZ2cQMjL7/42Tas3rUymQmJECALqX34Nd8OvNDcSPuThe475zYrk7ZRhpUjRkfmV1XCkPLUmssVE5NLwqCXoSRdjXwsDHr1vdcqnBicicdp1AW/KqSij/X2u0W3DadJORymPHxq4b9SCtGxzCjwYXHuLX/2sB9zqYBEMin9P43kKr2I/XIXWpwc7UvHQHaIkSGv3Rcajx8L/SqaUMLN/A5BC+uJnFsxMZMWGH/ZG4PmDTd7Xbr5egpjivZC6lrPDYsWyFW6HfWT3sOJz0sMLzllbRS3mw0s55zD1NCLC+Si2Y4ywD2gAWQZcVsp5exA=
 before_install:
-- openssl aes-256-cbc -K $encrypted_ce57a6517705_key -iv $encrypted_ce57a6517705_iv
-  -in blynk_setup.tar.gz.enc -out blynk_setup.tar.gz -d
-- tar -xzf src/blynk_setup.tar.gz
+- openssl aes-256-cbc -K $encrypted_9a9668f4b961_key -iv $encrypted_9a9668f4b961_iv
+  -in src\\blynk_setup.tar.gz.enc -out src\\blynk_setup.tar.gz -d
+- tar -xzf src\\blynk_setup.tar.gz
 install:
 - pip install -U platformio
 script:
