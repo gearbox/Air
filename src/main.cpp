@@ -314,7 +314,7 @@ void setupWiFi() {
         DEBUG_SERIAL.println(WiFi.localIP());*/
 }
 
-/*
+
 // Virtual pin update FW
 BLYNK_WRITE(V22) {
         if (param.asInt() == 1) {
@@ -324,8 +324,7 @@ BLYNK_WRITE(V22) {
                 strcat(full_version, device_id);
                 strcat(full_version, "::");
                 strcat(full_version, fw_ver);
-//https://drive.google.com/file/d/0B82NFZGGrdaubFBMWl9vc1ZyYTA/view?usp=sharing
-                t_httpUpdate_return ret = ESPhttpUpdate.update("http://romfrom.space/get", full_version);
+                t_httpUpdate_return ret = ESPhttpUpdate.update("http://geariot-air.appspot.com/update/fw.bin", full_version);
                 switch (ret) {
                 case HTTP_UPDATE_FAILED:
                         //DEBUG_SERIAL.println("[update] Update failed.");
@@ -340,7 +339,7 @@ BLYNK_WRITE(V22) {
 
         }
 }
-*/
+
 
 // Virtual pin reset settings
 BLYNK_WRITE(V23) {
