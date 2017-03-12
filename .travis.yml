@@ -30,7 +30,8 @@ script:
 - cp .pioenvs/esp12e/firmware.bin update/fw.bin
 - gcloud -q preview app deploy app.yaml --promote
 deploy:
-  provider: releases
+matrix:
+ - provider: releases
     overwrite: true
     api_key:
       secure: eqMMDtMLTFsAkNwcjEUAb0vTH6BI3tVj7wOHNrNqAFmoNxfXQ7ZoruA/B4AP1KoT/AI/n5+PuIpptMzvRVaaYI79WlpImmp3uG3vjq/o2TTIO3R3+m4iKnnMm/H3K6dpef8qqCW/s8tAyX0RGMCpcSKX108q9AcBFnkLtH3uh343b+KcHhs6fnuHIc2gZPHp3JR8YqBKgGwQGfGl8JMQXQhfC/OdQ4OiwWQVjCT8a8L7vcFD3Jq7XKcQL8TgaIcZLOKH+wUYzGVxfNeI++9xFqyW2GWdDNUzjQmYBfB/A6Eyzl4iYbbGRPEnDEtE+XNoA27jrvKaRvhKlutTU96EyoPZVJdw4WDYp53L/SnyR7VkDFEbBcddMDJ2u+LgOsk+iXXbRZeT6iY3V0uSogyK+pvrbUFm7ynlzXdwhLqSFHIjpUgeNeLosH3ra3dcnQ04wwBOdVYxRMRnykWQ3CJpQqh4GQxzq7OPTOgSZKmWckaTa2VtJtA+POmUyrzlUVR9scz2jpG7tbshAL0EodIvlcb3kkl9p74JQ8ngP8z6+TxXJ2Xa33/cmeVb0Yo5h1RBWoqHdh67+Jb7y58DNCFVh8zRrz+UmaF3qIJiddk4y0u1Sx7fUTwpNG9lVO1Ch3y6S4MMErg8cH7Hne9C5O0IFHCbvjeAiDMApk1MOzyMj/I=
