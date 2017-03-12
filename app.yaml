@@ -1,0 +1,41 @@
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+
+- url: /favicon\.ico
+  static_files: images/favicon.ico
+  upload: images/favicon\.ico
+
+- url: /
+  script: main.app
+
+- url: /index\.html
+  script: main.app
+
+- url: /images
+  static_dir: images
+
+- url: /(.*\.(gif|png|jpg|ico))$
+  static_files: images/\1
+  upload: images/.*\.(gif|png|jpg|ico)$
+
+- url: /css
+  static_dir: css
+
+- url: /update
+  static_dir: update
+
+- url: /(.*\.(bin))$
+  static_files: update/\1
+  upload: update/.*\.(bin)$
+
+- url: /.*
+  script: main.app
+
+libraries:
+- name: jinja2
+  version: "2.6"
+- name: markupsafe
+  version: "0.15"
