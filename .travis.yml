@@ -7,8 +7,8 @@ cache:
   - "~/.platformio"
 before_install:
 - openssl aes-256-cbc -K $encrypted_9a9668f4b961_key -iv $encrypted_9a9668f4b961_iv
-  -in src\\blynk_setup.tar.gz.enc -out src\\blynk_setup.tar.gz -d
-- tar -xzf src\\blynk_setup.tar.gz
+  -in src/blynk_setup.tar.gz.enc -out src/blynk_setup.tar.gz -d
+- tar -xzf src/blynk_setup.tar.gz
 install:
 - pip install -U platformio
 script:
