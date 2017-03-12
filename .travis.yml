@@ -40,3 +40,4 @@ deploy:
     on:
       repo: gearbox/Air
       all_branches: true
+      tags: true
