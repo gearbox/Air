@@ -13,10 +13,12 @@
 
 // OTA updates
 #include <ESP8266httpUpdate.h>
+
 // Blynk
 #include <BlynkSimpleEsp8266.h>
 // Set Blynk token and server
 #include "blynk_setup.h"
+WidgetTerminal lcd(V0); //Init Blynk LCD widget for debug information
 
 // JSON
 #include <ArduinoJson.h>          //https://github.com/bblanchon/ArduinoJson
@@ -43,13 +45,19 @@ SimpleTimer timer;
 // CO2 SERIAL
 #define DEBUG_SERIAL Serial1
 #define SENSOR_SERIAL Serial
-#define HIGH_CO2 1000 //High concentration of CO2 - Alert
+//#define HIGH_CO2 1000 //High concentration of CO2 - Alert
+int HIGH_CO2 = 0;
 byte cmd[9] = {0xFF,0x01,0x86,0x00,0x00,0x00,0x00,0x00,0x79};
 unsigned char response[7];
 
 // Device Id
 char device_id[17] = "Air";
 const char fw_ver[17] = "0.2.1";
+
+// Stringifying the BUILD_TAG parameter
+#define TEXTIFY(A) #A
+#define ESCAPEQUOTE(A) TEXTIFY(A)
+String buildTag = ESCAPEQUOTE(BUILD_TAG);
 
 // Setup Wifi connection
 WiFiManager wifiManager;
@@ -82,6 +90,7 @@ char loader[4] {'.'};
 //callback notifying the need to save config
 void saveConfigCallback() {
         //DEBUG_SERIAL.println("Should save config");
+        lcd.println("DBG: Should save config");
         shouldSaveConfig = true;
 }
 
@@ -93,6 +102,7 @@ void factoryReset() {
 
 void printString(String str) {
         //DEBUG_SERIAL.println(str);
+        lcd.println("DBG: "+str);
 }
 
 void breathe() {
@@ -226,12 +236,14 @@ bool loadConfig() {
         File configFile = SPIFFS.open("/config.json", "r");
         if (!configFile) {
                 //DEBUG_SERIAL.println("Failed to open config file");
+                lcd.println("DBG: Failed to open config file");
                 return false;
         }
 
         size_t size = configFile.size();
         if (size > 1024) {
                 //DEBUG_SERIAL.println("Config file size is too large");
+                lcd.println("DBG: Config file size is too large");
                 return false;
         }
 
@@ -248,6 +260,7 @@ bool loadConfig() {
 
         if (!json.success()) {
                 //DEBUG_SERIAL.println("Failed to parse config file");
+                lcd.println("DBG: Failed to parse config file");
                 return false;
         }
 
@@ -266,6 +279,9 @@ void configModeCallback (WiFiManager *wifiManager) {
         printString("to setup device");
 
         // drawConnectionDetails(ssid, pass, url);
+        lcd.println("WiFi:");
+        lcd.println(ssid);
+        lcd.println(pass);
 }
 
 void setupWiFi() {
@@ -314,30 +330,41 @@ void setupWiFi() {
         DEBUG_SERIAL.println(WiFi.localIP());*/
 }
 
+//
+BLYNK_WRITE(V15) {
+  HIGH_CO2 = param.asInt();
+}
 
 // Virtual pin update FW
 BLYNK_WRITE(V22) {
-        if (param.asInt() == 1) {
+//        if (param.asInt() == 1) {
                 //DEBUG_SERIAL.println("Got a FW update request");
+
 
                 char full_version[34] {""};
                 strcat(full_version, device_id);
                 strcat(full_version, "::");
                 strcat(full_version, fw_ver);
-                t_httpUpdate_return ret = ESPhttpUpdate.update("http://geariot-air.appspot.com/update/fw.bin", full_version);
+
+                //t_httpUpdate_return ret = ESPhttpUpdate.update("http://geariot-air.appspot.com/update/fw.bin", full_version);
+                //t_httpUpdate_return ret = ESPhttpUpdate.update("http://geariot-air.appspot.com/update/fw.bin");
+                t_httpUpdate_return ret = ESPhttpUpdate.update("http://geariot-air.appspot.com", 80, "/update/fw.bin");
                 switch (ret) {
                 case HTTP_UPDATE_FAILED:
                         //DEBUG_SERIAL.println("[update] Update failed.");
+                        lcd.println("Update failed");
                         break;
                 case HTTP_UPDATE_NO_UPDATES:
                         //DEBUG_SERIAL.println("[update] Update no Update.");
+                        lcd.println("Update no update");
                         break;
                 case HTTP_UPDATE_OK:
                         //DEBUG_SERIAL.println("[update] Update ok.");
+                        lcd.println("Update Ok!");
                         break;
                 }
 
-        }
+//        }
 }
 
 
@@ -388,12 +415,16 @@ void setup() {
         timer.setInterval(15000L, sendMeasurements);
 
         setBlinkProperty();
+
+        lcd.println("Gear IoT Air: "+buildTag);
 }
 
 void loop() {
         Blynk.run();
         timer.run();
-        if (co2 > HIGH_CO2){
-          breathe();
+        if (HIGH_CO2 > 500) {
+          if (co2 > HIGH_CO2){
+            breathe();
+          }
         }
 }
