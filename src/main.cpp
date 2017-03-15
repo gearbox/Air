@@ -18,7 +18,12 @@
 #include <BlynkSimpleEsp8266.h>
 // Set Blynk token and server
 #include "blynk_setup.h"
+// Keep this flag not to re-sync on every reconnection
+bool isFirstConnect = true;
 WidgetTerminal lcd(V0); //Init Blynk LCD widget for debug information
+WidgetLED led_b(V23);
+WidgetLED led_r(V24);
+WidgetLED led_g(V25);
 
 // JSON
 #include <ArduinoJson.h>          //https://github.com/bblanchon/ArduinoJson
@@ -339,27 +344,33 @@ BLYNK_WRITE(V15) {
 BLYNK_WRITE(V22) {
 //        if (param.asInt() == 1) {
                 //DEBUG_SERIAL.println("Got a FW update request");
-
-
                 char full_version[34] {""};
                 strcat(full_version, device_id);
                 strcat(full_version, "::");
                 strcat(full_version, fw_ver);
+                led_b.on();
 
-                //t_httpUpdate_return ret = ESPhttpUpdate.update("http://geariot-air.appspot.com/update/fw.bin", full_version);
+                t_httpUpdate_return ret = ESPhttpUpdate.update("http://geariot-air.appspot.com/update/fw.bin", full_version);
                 //t_httpUpdate_return ret = ESPhttpUpdate.update("http://geariot-air.appspot.com/update/fw.bin");
-                t_httpUpdate_return ret = ESPhttpUpdate.update("http://geariot-air.appspot.com", 80, "/update/fw.bin");
+                //t_httpUpdate_return ret = ESPhttpUpdate.update("http://geariot-air.appspot.com", 80, "/update/fw.bin");
+
                 switch (ret) {
                 case HTTP_UPDATE_FAILED:
                         //DEBUG_SERIAL.println("[update] Update failed.");
+                        led_r.on();
                         lcd.println("Update failed");
+
                         break;
                 case HTTP_UPDATE_NO_UPDATES:
                         //DEBUG_SERIAL.println("[update] Update no Update.");
+                        led_b.on();
+                        led_r.on();
+                        led_g.on();
                         lcd.println("Update no update");
                         break;
                 case HTTP_UPDATE_OK:
                         //DEBUG_SERIAL.println("[update] Update ok.");
+                        led_g.on();
                         lcd.println("Update Ok!");
                         break;
                 }
@@ -371,6 +382,14 @@ BLYNK_WRITE(V22) {
 // Virtual pin reset settings
 BLYNK_WRITE(V23) {
         factoryReset();
+}
+
+BLYNK_CONNECTED() {
+  if (isFirstConnect) {
+    //Blynk.syncAll();
+    Blynk.syncVirtual(V15);
+  }
+  isFirstConnect = false;
 }
 
 void setup() {
