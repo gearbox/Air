@@ -350,9 +350,9 @@ BLYNK_WRITE(V22) {
                 strcat(full_version, fw_ver);
                 led_b.on();
 
-                t_httpUpdate_return ret = ESPhttpUpdate.update("http://geariot-air.appspot.com/update/fw.bin", full_version);
+                //t_httpUpdate_return ret = ESPhttpUpdate.update("http://geariot-air.appspot.com/update/fw.bin", full_version);
                 //t_httpUpdate_return ret = ESPhttpUpdate.update("http://geariot-air.appspot.com/update/fw.bin");
-                //t_httpUpdate_return ret = ESPhttpUpdate.update("http://geariot-air.appspot.com", 80, "/update/fw.bin");
+                t_httpUpdate_return ret = ESPhttpUpdate.update("http://http://192.168.0.111", 80, "/bin/fw.bin");
 
                 switch (ret) {
                 case HTTP_UPDATE_FAILED:
